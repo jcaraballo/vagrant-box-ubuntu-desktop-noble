@@ -1,5 +1,5 @@
-# vagrant-box-ubuntu-desktop-jammy
-Resources to create a Vagrant Base Box with an Ubuntu Desktop 22.04 LTS (Jammy Jellyfish)
+# vagrant-box-ubuntu-desktop-noble
+Resources to create a Vagrant Base Box with an Ubuntu Desktop 24.04.1 LTS (Noble Numbat)
 
 ## Requires
 
@@ -16,62 +16,67 @@ echo deb '[arch=amd64]' https://download.virtualbox.org/virtualbox/debian $( lsb
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 sudo apt-get update
-sudo apt-get install -y virtualbox-6.1 dkms
-```
-
-* VirtualBox Guest Additions (6.1.26)
-```
-wget https://download.virtualbox.org/virtualbox/6.1.26/Oracle_VM_VirtualBox_Extension_Pack-6.1.26.vbox-extpack
-VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.26.vbox-extpack
+sudo apt-get install -y virtualbox-7.0 dkms
 ```
 
 ## Build
-* _Host_: Download [Ubuntu 22.04 LTS (64 bit)](https://www.ubuntu.com/download/desktop)
+* _Host_: Download [Ubuntu 24.04.1 LTS (64 bit)](https://www.ubuntu.com/download/desktop)
 * _Host_: Create a new Virtual Box VM for the installation
   1. Open VM Virtual Box Manager
   2. Click New
   3. Virtual machine general details:
-     1. Name: Ubuntu Desktop 22.04 LTS (Jammy Jellyfish)
-     2. Type: Linux
-     3. Version: Ubuntu (64-bit)
-  4. Memory size: 8192
-  5. Hard disk:
+     0. Select Expert Mode
+     1. Name: Ubuntu Desktop 24.04.1 LTS (Noble Numbat)
+     2. ISO Image: (select the `.iso` from above)
+     3. Leave _Type: Linux_ and _Version: Ubuntu (64-bit)_
+     4. Tick _Skip Unattended Installation_
+  5. Hardware
+     1. Memory size: 8192
+     2. Processors: 4 CPUs
+     3. Leave _Enable EFI_ unticked
+  6. Virtual Hard disk:
      1. Create a virtual hard disk now
-     2. VDI
-     3. Dinamically allocated
-     4. 50 Gb
-  6. Open the settings of the VM > Display > Increase video memory to 128 MB
-     (for some reason with the default video memory the keyboard doesn't get captured
-     by the guest)
-  7. Start the new VM: Doble click on the newly created VM with the name given above
-  8. Add an optical drive, select the image downloaded from Ubuntu and click start
+     2. 80 Gb
+     3. Leave _VDI_ and _Pre-allocate Full Size_ unticked
+  7. Finish
+  6. Open the settings of the VM
+     1. General > Advanced > Shared Clipboard: Bidirectional
+     2. Display > Increase video memory to 128 MB
+     3. User inteface > Untick _Show in Full-screen/Seamless_
+     4. OK
+  9. Click on Displan > Video Memory to increase to 256 MB
+  10. Start
 * _Guest_: Install Ubuntu in a VirtualBox VM, including the guest additions:
   1. Select _Try or Install Ubuntu_
-  2. Select _Install Ubuntu_
-  3. Keyboard layout English (UK)/English (UK)
-  4. Minimal installation
-  5. Leave _Download updates while installing Ubuntu_ selected
-  6. Select _Install third-party software_
-  7. Leave selected _Erase disk and install Ubuntu_
-  8. Select Advanced Features and _Use LVM with the new Ubuntu installation_, but leave Encrypt the new Ubuntu installation for security unselected.
-  9. Time zone London
-  10. Set name, computer's name, username and password to _vagrant_. Require password to log in.
-  11. Once the installation is complete, reboot
-  12. Install updates, reboot
-  13. Install guest additions dependencies
+  2. Click on weird solid white screen
+  3. Choose your language: English
+  4. Accesibility in Ubuntu: Next
+  5. Keyboard layout English (UK)/English (UK)
+  6. Connect to the Internet: leave _Use wired connection_, Next
+  7. What do you want to do...? leave _Install Ubuntu_, Next
+  8. How would you like to...? Interactive installation
+  9. What apps would you like to install...? Just the essentials
+  10. Install recommended propietary software? Install Third Party Software..., Next
+  11. How do you want to install? Erase Disk and Install Ubuntu, Advanced features, Use LVM (no encryption), Next
+  12. Crate your account: Set name, computer's name, username and password to _vagrant_. Require password to log in, Next
+  13. Time zone Europe/London
+  14. Install
+  15. Once the installation is complete, reboot
+  16. Install updates, reboot
+  17. Install guest additions dependencies
       ```
       sudo apt install gcc make perl
       ```
-  14. Install guest additions (Devices > Insert Guest Additions CD image then run `autorun.sh`), eject the additions media and reboot
+  18. NOT DOING THIS: Install guest additions (Devices > Insert Guest Additions CD image then run `autorun.sh`), eject the additions media and reboot
 
 * _Guest_: Run some scripts to make the image Vagrant-friendly
   1. Run [prepare-base-box-root.bash](prepare-base-box-root.bash) as root (requires password for sudo)
   ```
-  wget https://raw.githubusercontent.com/jcaraballo/vagrant-box-ubuntu-desktop-jammy/master/prepare-base-box-root.bash -O - | sudo bash
+  wget https://raw.githubusercontent.com/jcaraballo/vagrant-box-ubuntu-desktop-noble/master/prepare-base-box-root.bash -O - | sudo bash
   ```
   2. Run [prepare-base-box-vagrant.bash](prepare-base-box-vagrant.bash) as the vagrant user
   ```
-  wget https://raw.githubusercontent.com/jcaraballo/vagrant-box-ubuntu-desktop-jammy/master/prepare-base-box-vagrant.bash -O - | bash
+  wget https://raw.githubusercontent.com/jcaraballo/vagrant-box-ubuntu-desktop-noble/master/prepare-base-box-vagrant.bash -O - | bash
   ```
   3. Send the shutdown signal and turn off the VM
 
@@ -85,17 +90,17 @@ VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.26.vbox-extpa
   (Add `-f` if you've already added the box to the vagrant list and want to
   replace it)
   ```
-  vagrant box add --name ubuntu-desktop-jammy-22.04 package.box
+  vagrant box add --name ubuntu-desktop-noble-24.04 package.box
   ```
 
 * (Optional) If you'd like to upload it to vagrantup
   1. Create a new account if you don't already have one and log in
   2. New Vagrant Box
   3. Add name and description. I use
-    1. Name: `jcaraballo` / `ubuntu-desktop-jammy`
+    1. Name: `jcaraballo` / `ubuntu-desktop-noble`
     2. Description:
        ```
-       Vagrant/VirtualBox Base Box with an Ubuntu Desktop 22.04 LTS (Jammy Jellyfish)
+       Vagrant/VirtualBox Base Box with an Ubuntu Desktop 24.04.1 LTS (Noble Numbat)
        * Project sources: REPO_LINK
        * For this version: VERSION_LINK
        ```
@@ -112,7 +117,7 @@ VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.26.vbox-extpa
 
 
 ## Binary
-[Vagrant Cloud: jcaraballo/ubuntu-desktop-jammy](https://app.vagrantup.com/jcaraballo/boxes/ubuntu-desktop-jammy)
+[Vagrant Cloud: jcaraballo/ubuntu-desktop-noble](https://app.vagrantup.com/jcaraballo/boxes/ubuntu-desktop-noble)
 
 ## Usage example
-See [vagrant-ubuntu-22.04-dev](https://github.com/jcaraballo/vagrant-ubuntu-22.04-dev)
+See [vagrant-ubuntu-24.04-dev](https://github.com/jcaraballo/vagrant-ubuntu-24.04-dev)
