@@ -1,5 +1,5 @@
 # vagrant-box-ubuntu-desktop-noble
-Resources to create a Vagrant Base Box with an Ubuntu Desktop 24.04.1 LTS (Noble Numbat)
+Resources to create a Vagrant Base Box with an Ubuntu Desktop 24.04.3 LTS (Noble Numbat)
 
 ## Requires
 
@@ -20,13 +20,13 @@ sudo apt-get install -y virtualbox-7.0 dkms
 ```
 
 ## Build
-* _Host_: Download [Ubuntu 24.04.1 LTS (64 bit)](https://www.ubuntu.com/download/desktop)
+* _Host_: Download [Ubuntu 24.04.3 LTS (64 bit)](https://www.ubuntu.com/download/desktop)
 * _Host_: Create a new Virtual Box VM for the installation
   1. Open VM Virtual Box Manager
   2. Click New
   3. Virtual machine general details:
      0. Select Expert Mode
-     1. Name: Ubuntu Desktop 24.04.1 LTS (Noble Numbat)
+     1. Name: Ubuntu Desktop 24.04.3 LTS (Noble Numbat)
      2. ISO Image: (select the `.iso` from above)
      3. Leave _Type: Linux_ and _Version: Ubuntu (64-bit)_
      4. Tick _Skip Unattended Installation_
@@ -44,30 +44,28 @@ sudo apt-get install -y virtualbox-7.0 dkms
      2. Display > Increase video memory to 128 MB
      3. User inteface > Untick _Show in Full-screen/Seamless_
      4. OK
-  9. Click on Displan > Video Memory to increase to 256 MB
   10. Start
 * _Guest_: Install Ubuntu in a VirtualBox VM, including the guest additions:
   1. Select _Try or Install Ubuntu_
-  2. Click on weird solid white screen
-  3. Choose your language: English
-  4. Accesibility in Ubuntu: Next
-  5. Keyboard layout English (UK)/English (UK)
-  6. Connect to the Internet: leave _Use wired connection_, Next
-  7. What do you want to do...? leave _Install Ubuntu_, Next
-  8. How would you like to...? Interactive installation
-  9. What apps would you like to install...? Just the essentials
-  10. Install recommended propietary software? Install Third Party Software..., Next
-  11. How do you want to install? Erase Disk and Install Ubuntu, Advanced features, Use LVM (no encryption), Next
-  12. Crate your account: Set name, computer's name, username and password to _vagrant_. Require password to log in, Next
-  13. Time zone Europe/London
-  14. Install
-  15. Once the installation is complete, reboot
-  16. Install updates, reboot
-  17. Install guest additions dependencies
+  2. Choose your language: English
+  3. Accesibility in Ubuntu: Next
+  4. Keyboard layout English (UK)/English (UK)
+  5. Connect to the Internet: leave _Use wired connection_, Next
+  6. What do you want to do...? leave _Install Ubuntu_, Next
+  7. How would you like to...? Interactive installation
+  8. What apps would you like to install...? Just the essentials
+  9. Install recommended propietary software? Install Third Party Software..., Next
+  10. How do you want to install? Erase Disk and Install Ubuntu, Advanced features, Use LVM (no encryption), Next
+  11. Crate your account: Set name, computer's name, username and password to _vagrant_. Require password to log in, Next
+  12. Time zone Europe/London
+  13. Install
+  14. Once the installation is complete, reboot
+  15. Install updates, reboot
+  16. Install guest additions dependencies
       ```
       sudo apt install gcc make perl
       ```
-  18. NOT DOING THIS: Install guest additions (Devices > Insert Guest Additions CD image then run `autorun.sh`), eject the additions media and reboot
+  17. NOT DOING THIS: Install guest additions (Devices > Insert Guest Additions CD image then run `autorun.sh`), eject the additions media and reboot
 
 * _Guest_: Run some scripts to make the image Vagrant-friendly
   1. Run [prepare-base-box-root.bash](prepare-base-box-root.bash) as root (requires password for sudo)
@@ -100,7 +98,7 @@ sudo apt-get install -y virtualbox-7.0 dkms
     1. Name: `jcaraballo` / `ubuntu-desktop-noble`
     2. Description:
        ```
-       Vagrant/VirtualBox Base Box with an Ubuntu Desktop 24.04.1 LTS (Noble Numbat)
+       Vagrant/VirtualBox Base Box with an Ubuntu Desktop 24.04.3 LTS (Noble Numbat)
        * Project sources: REPO_LINK
        * For this version: VERSION_LINK
        ```
